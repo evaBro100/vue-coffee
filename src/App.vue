@@ -1,32 +1,22 @@
 <script setup>
-import MyCode from './components/MyCode.vue'
+import Header from './components/Header.vue';
+import Card from './components/Card.vue';
 </script>
 
 <template>
-	<div class="bg-white w-4/5 h-screen m-auto mt-14 rounded-xl shadow-2xl">
-		<header>
-			<div>
-				<img src="/logo.png" alt="Logo">
-				<div>
-					<h2>Название магазина</h2>
-					<p>Онлайн-магазин кроссовок</p>
-				</div>
+	<div class="bg-white w-4/5 m-auto mt-14 rounded-xl shadow-2xl">
+		<Header />
+		<div class="p-10">
+			<h2 class="text-3xl font-bold mb-8">Меню</h2>
+			<div class="grid grid-cols-4 gap-5">
+				<Card />
+				<Card />
+				<Card />
+				<Card />
+				<Card />
+				<Card />
+				<Card />
 			</div>
-
-			<ul>
-				<li>
-					<img src="/cart.svg" alt="Cart">
-					<b>0 руб.</b>
-				</li>
-				<li>
-					<img src="/heart.svg" alt="Heart">
-					<b>Избранное</b>
-				</li>
-				<li>
-					<img src="/profile.svg" alt="Profile">
-					<b>Профиль</b>
-				</li>
-			</ul>
-		</header>
+		</div>
 	</div>
 </template>
