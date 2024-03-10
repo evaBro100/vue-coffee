@@ -11,6 +11,7 @@
     "format": "prettier --write src/"
   },
   "dependencies": {
+    "axios": "^1.6.7",
     "vue": "^3.4.15"
   },
   "devDependencies": {
@@ -27,4 +28,3 @@
     "vite": "^5.0.11"
   }
 }
-

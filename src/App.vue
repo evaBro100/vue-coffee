@@ -1,7 +1,44 @@
 <script setup>
+import { onMounted, ref, watch, reactive } from 'vue';
+import axios from 'axios';
 import Header from './components/Header.vue'
 import Drawer from './components/Drawer.vue'
 import CardList from './components/CardList.vue'
+
+const items = ref([]);
+const filters = reactive({
+	sortBy: 'title',
+	searchOuerty: '',
+});
+const onChangeSelect = (event) => {
+	filters.sortBy = event.target.value
+}
+const onChangeSearchInput = (event) => {
+	filters.searchOuerty = event.target.value
+}
+const fetchItems = async () => {
+	try{
+		const params = {
+			sortBy: filters.sortBy
+		}
+
+		if (filters.searchOuerty){
+			params.title = `*${filters.searchOuerty}*`
+		}
+
+		const { data } = await axios.get(
+			`https://869ed7102af9fbd3.mokky.dev/items`, { 
+				params
+			})
+		items.value = data;
+		console.log(data)
+	} catch (err){
+		console.log(err);
+	}
+}
+
+onMounted(fetchItems)
+watch(filters, fetchItems)
 </script>
 
 <template>
@@ -13,15 +50,16 @@ import CardList from './components/CardList.vue'
         <h2 class="text-3xl font-bold mb-10">Меню</h2>
 
         <div class="flex gap-4">
-          <select class="py-2 px-3 border rounded-md outline-none">
-            <option>По наименованию</option>
-            <option>По цене (дешевле)</option>
-            <option>По цене (дороже)</option>
+          <select @change="onChangeSelect" class="py-2 px-3 border rounded-md outline-none">
+            <option value="title">По наименованию</option>
+            <option value="price">По цене (дешевле)</option>
+            <option value="-price">По цене (дороже)</option>
           </select>
           <div class="relative">
             <img class="absolute left-4 top-3" src="/search.svg" />
 
             <input
+			  @input="onChangeSearchInput"
               class="border rounded-md py-2 pl-11 pr-4 outline-none focus:border-gray-400"
               type="text"
               placeholder="Поиск..."
@@ -29,7 +67,9 @@ import CardList from './components/CardList.vue'
           </div>
         </div>
       </div>
-      <CardList />
+	  <div class="mt-10">
+		  <CardList :items="items"/>
+	  </div>
     </div>
   </div>
 </template>
