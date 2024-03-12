@@ -8,13 +8,13 @@ import CardList from './components/CardList.vue'
 const items = ref([])
 const filters = reactive({
   sortBy: 'title',
-  searchQuerty: ''
+  searchQuery: ''
 })
 const onChangeSelect = (event) => {
   filters.sortBy = event.target.value
 }
 const onChangeSearchInput = (event) => {
-  filters.searchQuerty = event.target.value
+  filters.searchQuery = event.target.value
 }
 
 const fetchFavorites = async () => {
@@ -45,8 +45,8 @@ const fetchItems = async () => {
       sortBy: filters.sortBy
     }
 
-    if (filters.searchQuerty) {
-      params.title = `*${filters.searchQuerty}*`
+    if (filters.searchQuery) {
+      params.title = `*${filters.searchQuery}*`
     }
 
     const { data } = await axios.get(`https://869ed7102af9fbd3.mokky.dev/items`, {
