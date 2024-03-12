@@ -1,15 +1,20 @@
 <script setup>
 import Card from './Card.vue'
+
+defineProps({
+  items: Array
+})
 </script>
 
 <template>
   <div class="grid grid-cols-4 gap-5">
-    <Card title="Латте" imageUrl="/coffe/latte.png" :price="250" />
-    <Card />
-    <Card />
-    <Card />
-    <Card />
-    <Card />
-    <Card />
+    <Card
+      v-for="item in items"
+      :key="item.id"
+      :title="item.title"
+      :imageUrl="item.imageUrl"
+      :price="item.price"
+      :isFavorite="item.isFavorite"
+    />
   </div>
 </template>

@@ -1,4 +1,6 @@
 <script setup>
+import { inject } from 'vue'
+
 defineProps({
   title: String,
   imageUrl: String,
@@ -8,6 +10,8 @@ defineProps({
   onClickAdd: Function,
   onClickFavorite: Function
 })
+
+const addToFavorite = inject('addToFavorite')
 </script>
 
 <template>
