@@ -1,7 +1,6 @@
 <script setup>
-import { inject } from 'vue'
-
 defineProps({
+  id: Number,
   title: String,
   imageUrl: String,
   price: Number,
@@ -10,8 +9,6 @@ defineProps({
   onClickAdd: Function,
   onClickFavorite: Function
 })
-
-const addToFavorite = inject('addToFavorite')
 </script>
 
 <template>
@@ -22,6 +19,7 @@ const addToFavorite = inject('addToFavorite')
       :src="!isFavorite ? '/like-1.svg' : '/like-2.svg'"
       alt="Like 1"
       class="absolute top-8 left-8"
+      @click="onClickFavorite"
     />
 
     <img :src="imageUrl" alt="Latte" class="w-60" />
@@ -32,7 +30,7 @@ const addToFavorite = inject('addToFavorite')
         <b> {{ price }} руб.</b>
       </div>
 
-      <img :src="!isAdded ? '/plus.svg' : '/checked.svg'" alt="Plus" />
+      <img @click="onClickAdd" :src="!isAdded ? '/plus.svg' : '/checked.svg'" alt="Plus" />
     </div>
   </div>
 </template>
