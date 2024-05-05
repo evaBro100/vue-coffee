@@ -40,8 +40,8 @@ export class ProductService {
     return product
   }
 
-  findRelatives(currentProductId: number) {
-    return this.prisma.product.findMany({
+  async findRelatives(currentProductId: number) {
+    return await this.prisma.product.findMany({
       where: {
         id: {
           not: currentProductId

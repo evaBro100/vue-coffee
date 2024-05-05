@@ -28,3 +28,13 @@ model Review {
   productId Int      @map("product_id")
   product   Product  @relation(fields: [productId], references: [id])
 }
+
+model User {
+  id         Int      @id @default(autoincrement())
+  telegramId Int      @unique
+  firstName  String?
+  lastName   String?
+  username   String?
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+}

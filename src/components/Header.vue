@@ -21,6 +21,19 @@
         <img src="/profile.svg" alt="Profile" />
         <span>Профиль</span>
       </li>
+      <telegram-login-temp mode="callback" telegram-login="myshatte_bot" @callback="onLogin" />
     </ul>
   </header>
 </template>
+
+<script setup>
+import axios from 'axios'
+import { telegramLoginTemp } from 'vue3-telegram-login'
+
+const onLogin = async (user) => {
+  const res = await axios.post(`${import.meta.env.VITE_HOST_API}auth/telegram`, user)
+  console.log(res)
+}
+</script>
+
+<style lang="scss" scoped></style>
