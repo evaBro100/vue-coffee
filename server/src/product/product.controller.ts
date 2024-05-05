@@ -9,6 +9,9 @@ import {
   Query
 } from '@nestjs/common'
 import { ProductService } from './product.service'
+import { ApiTags } from '@nestjs/swagger';
+
+@ApiTags('products')
 
 @Controller('products')
 export class ProductController {

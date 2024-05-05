@@ -8,6 +8,7 @@
       </div>
     </div>
 
+    <!-- TODO скрывать кнопки до входа в акк и придумать кнопку выхода -->
     <ul class="flex items-center gap-10">
       <li class="flex items-center cursor-pointer gap-3 text-gray-500 hover:text-black">
         <img src="/cart.svg" alt="Cart" />

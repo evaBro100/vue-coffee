@@ -1,6 +1,11 @@
 import { NestFactory } from '@nestjs/core'
 import { AppModule } from './app.module'
 import { PrismaService } from './prisma.service'
+import {
+  DocumentBuilder,
+  SwaggerDocumentOptions,
+  SwaggerModule
+} from '@nestjs/swagger'
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule)
@@ -17,6 +22,18 @@ async function bootstrap() {
     methods: ['GET', 'POST'],
     credentials: true
   })
+
+  const config = new DocumentBuilder()
+    .setTitle('Myshatte')
+    .setVersion('1.0')
+    .build()
+  const options: SwaggerDocumentOptions = {
+    operationIdFactory: (controllerKey: string, methodKey: string) =>
+      controllerKey
+  }
+  const document = SwaggerModule.createDocument(app, config, options)
+  SwaggerModule.setup('api', app, document)
+
   const prismaService = app.get(PrismaService)
   await prismaService.enableShutdownHooks(app)
   await app.setGlobalPrefix('api')
