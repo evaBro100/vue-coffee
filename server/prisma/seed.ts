@@ -5,9 +5,8 @@ import * as dotenv from 'dotenv'
 const prisma = new PrismaClient()
 
 const fakerProduct = (): Prisma.ProductCreateInput => ({
-  name: '',
+  title: '',
   description: '',
-  slug: '',
   price: ''
 })
 

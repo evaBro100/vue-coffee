@@ -6,28 +6,34 @@ import {
   Patch,
   Param,
   Delete,
-  Query
+  Query,
+  ParseBoolPipe
 } from '@nestjs/common'
 import { ProductService } from './product.service'
-import { ApiTags } from '@nestjs/swagger';
+import { ApiBody, ApiQuery, ApiTags } from '@nestjs/swagger'
+import { Prisma } from '@prisma/client'
+import { CreateProductDto } from './dto/product.dto'
 
 @ApiTags('products')
-
 @Controller('products')
 export class ProductController {
   constructor(private readonly productService: ProductService) {}
 
+  @ApiQuery({ name: 'searchTerm', required: false, type: String })
   @Get()
-  findAll(@Query('searchTerm') searchTerm?: string) {
+  findAll(
+    @Query('searchTerm')
+    searchTerm?: string
+  ) {
     return this.productService.findAll(searchTerm)
   }
 
-  @Get('/slug/:slug')
-  findBySlug(@Param('slug') slug: string) {
-    return this.productService.findBySlug(slug)
-  }
+  // @Get('/slug/:slug')
+  // findBySlug(@Param('slug') slug: string) {
+  //   return this.productService.findBySlug(slug)
+  // }
 
-  @Get('/relatuves/:id')
+  @Get('/relatives/:id')
   findRelatives(@Param('id') id: string) {
     return this.productService.findRelatives(+id)
   }
@@ -35,6 +41,15 @@ export class ProductController {
   @Get(':id')
   findById(@Param('id') id: string) {
     return this.productService.findById(+id)
+  }
+
+  @Post()
+  @ApiBody({
+    type: CreateProductDto,
+    description: 'Json structure for user object'
+  })
+  createProduct(@Body() createProductDto: CreateProductDto) {
+    return this.productService.create(createProductDto)
   }
 
   // @Post()

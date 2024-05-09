@@ -6,7 +6,9 @@ export class ReviewService {
   constructor(private prisma: PrismaService) {}
 
   async findAll() {
-    const review = await this.prisma.review.findMany({orderBy: {createdAt: 'desc'}})
+    const review = await this.prisma.review.findMany({
+      orderBy: { createdAt: 'desc' }
+    })
 
     if (!review) throw new NotFoundException('Product not found')
 

@@ -23,6 +23,9 @@ async function bootstrap() {
     credentials: true
   })
 
+  const prismaService = app.get(PrismaService)
+  await prismaService.enableShutdownHooks(app)
+  await app.setGlobalPrefix('api')
   const config = new DocumentBuilder()
     .setTitle('Myshatte')
     .setVersion('1.0')
@@ -33,10 +36,6 @@ async function bootstrap() {
   }
   const document = SwaggerModule.createDocument(app, config, options)
   SwaggerModule.setup('api', app, document)
-
-  const prismaService = app.get(PrismaService)
-  await prismaService.enableShutdownHooks(app)
-  await app.setGlobalPrefix('api')
   await app.listen(4200)
 }
 bootstrap()
