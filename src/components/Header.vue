@@ -33,6 +33,7 @@ import { telegramLoginTemp } from 'vue3-telegram-login'
 
 const onLogin = async (user) => {
   const res = await axios.post(`${import.meta.env.VITE_HOST_API}auth/telegram`, user)
+  // TODO надо куда-то в стор
   console.log(res)
 }
 </script>

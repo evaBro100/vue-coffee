@@ -20,12 +20,18 @@ export class ProductController {
   constructor(private readonly productService: ProductService) {}
 
   @ApiQuery({ name: 'searchTerm', required: false, type: String })
+  @ApiQuery({ name: 'userId', required: false, type: Number })
+  @ApiQuery({ name: 'sortBy', required: false, type: String })
   @Get()
   findAll(
+    @Query('sortBy')
+    sortBy?: string,
     @Query('searchTerm')
-    searchTerm?: string
+    searchTerm?: string,
+    @Query('userId')
+    userId?: number
   ) {
-    return this.productService.findAll(searchTerm)
+    return this.productService.findAll(sortBy, searchTerm, userId)
   }
 
   // @Get('/slug/:slug')
