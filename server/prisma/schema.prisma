@@ -1,0 +1,54 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Product {
+  id          Int        @id @default(autoincrement())
+  createdAt   DateTime   @default(now()) @map("created_at")
+  updatedAt   DateTime   @updatedAt @map("updated_at")
+  title       String     @unique
+  description String?
+  // slug        String   @unique
+  price       Decimal
+  images      String[]
+  reviews     Review[]
+  Favorite    Favorite[]
+}
+
+model Review {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+  text      String
+  rating    Decimal
+  productId Int      @map("product_id")
+  product   Product  @relation(fields: [productId], references: [id])
+}
+
+model User {
+  id         Int        @id @default(autoincrement())
+  telegramId Int        @unique
+  firstName  String?
+  lastName   String?
+  username   String?
+  createdAt  DateTime   @default(now()) @map("created_at")
+  updatedAt  DateTime   @updatedAt @map("updated_at")
+  favorites  Favorite[] // Добавляем отношение многие ко многим к модели Favorite
+}
+
+model Favorite {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+  user      User     @relation(fields: [userId], references: [id])
+  userId    Int      @map("user_id")
+  product   Product  @relation(fields: [productId], references: [id])
+  productId Int      @map("product_id")
+
+  @@unique([userId, productId]) // Уникальный индекс для комбинации пользователя и продукта
+}

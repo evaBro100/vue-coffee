@@ -8,6 +8,7 @@
       </div>
     </div>
 
+    <!-- TODO скрывать кнопки до входа в акк и придумать кнопку выхода -->
     <ul class="flex items-center gap-10">
       <li class="flex items-center cursor-pointer gap-3 text-gray-500 hover:text-black">
         <img src="/cart.svg" alt="Cart" />
@@ -21,6 +22,20 @@
         <img src="/profile.svg" alt="Profile" />
         <span>Профиль</span>
       </li>
+      <telegram-login-temp mode="callback" telegram-login="myshatte_bot" @callback="onLogin" />
     </ul>
   </header>
 </template>
+
+<script setup>
+import axios from 'axios'
+import { telegramLoginTemp } from 'vue3-telegram-login'
+
+const onLogin = async (user) => {
+  const res = await axios.post(`${import.meta.env.VITE_HOST_API}auth/telegram`, user)
+  // TODO надо куда-то в стор
+  console.log(res)
+}
+</script>
+
+<style lang="scss" scoped></style>
