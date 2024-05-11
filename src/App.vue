@@ -35,7 +35,7 @@ const fetchFavorites = async () => {
   }
 }
 
-const addToFavorite = async (item) => {
+const handleFavorite = async (item) => {
   try {
     if (!item.isFavorite) {
       const obj = {
@@ -112,7 +112,7 @@ watch(filters, fetchItems)
         </div>
       </div>
       <div class="mt-10">
-        <CardList :items="items" @addToFavorite="addToFavorite" />
+        <CardList :items="items" @handleFavorite="handleFavorite" />
       </div>
     </div>
   </div>
