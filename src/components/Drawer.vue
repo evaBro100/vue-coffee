@@ -1,6 +1,14 @@
 <script setup>
 import CartItemList from './CartItemList.vue'
 import DrawerHead from './DrawerHead.vue'
+import InfoBlock from './InfoBlock.vue'
+
+const emit = defineEmits(['createOrder'])
+defineProps({
+  totalPrice: Number,
+  tips: Number,
+  buttonDisabled: Boolean
+})
 </script>
 
 <template>
@@ -8,24 +16,33 @@ import DrawerHead from './DrawerHead.vue'
   <div class="bg-white w-96 h-full fixed right-0 top-0 z-20 p-8">
     <DrawerHead />
 
-    <CartItemList />
+    <div v-if="!totalPrice" class="flex h-full items-center">
+      <InfoBlock
+        title="Корзина пустая"
+        description="Добавьте хотя бы одну позицию, чтобы оформить заказ"
+        imageUrl="/public/package-icon.png"
+      />
+    </div>
 
-    <div class="flex flex-col gap-3 mt-7">
+    <CartItemList v-if="totalPrice > 0" />
+
+    <div v-if="totalPrice > 0" class="flex flex-col gap-3 mt-7">
       <div class="flex gap-2">
         <span>Итого:</span>
         <div class="flex-1 border-b border-dashed"></div>
-        <b>269 руб.</b>
+        <b>{{ totalPrice }} руб.</b>
       </div>
 
       <div class="flex gap-2">
         <span>Чаевые:</span>
         <div class="flex-1 border-b border-dashed"></div>
-        <b>15 руб.</b>
+        <b>{{ tips }} руб.</b>
       </div>
 
       <button
         class="mt-4 transition bg-orange-900 text-white disabled:bg-slate-300 w-full rounded-xl py-3 hover:bg-orange-950 cursor-pointer"
-        disabled=""
+        @click="emit('createOrder')"
+        :disabled="buttonDisabled"
       >
         Оформить заказ
       </button>
