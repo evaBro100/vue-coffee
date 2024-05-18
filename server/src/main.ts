@@ -14,10 +14,12 @@ async function bootstrap() {
       'http://localhost:3000',
       'http://example.com',
       'http://www.example.com',
-      'http://app.example.com',
+      'http://172.30.74.31',
       'https://example.com',
       'http://10.8.0.67',
-      'http://10.8.0.67:80'
+      'http://10.8.0.67:80',
+      '*'
+
     ],
     methods: ['GET', 'POST'],
     credentials: true
