@@ -19,7 +19,6 @@ async function bootstrap() {
       'http://10.8.0.67',
       'http://10.8.0.67:80',
       '*'
-
     ],
     methods: ['GET', 'POST'],
     credentials: true
@@ -31,6 +30,7 @@ async function bootstrap() {
   const config = new DocumentBuilder()
     .setTitle('Myshatte')
     .setVersion('1.0')
+    .addBearerAuth()
     .build()
   const options: SwaggerDocumentOptions = {
     operationIdFactory: (controllerKey: string, methodKey: string) =>

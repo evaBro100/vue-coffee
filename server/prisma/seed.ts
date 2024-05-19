@@ -5,9 +5,8 @@ import * as dotenv from 'dotenv'
 const prisma = new PrismaClient()
 
 const fakerProduct = (): Prisma.ProductCreateInput => ({
-  title: '',
-  description: '',
-  price: ''
+  title: faker.fakerRU.commerce.productName(),
+  price: faker.fakerRU.commerce.price()
 })
 
 async function main() {
@@ -20,6 +19,10 @@ async function main() {
       data: fakerProduct()
     })
   }
+  // await prisma.role.createMany({
+  //   data: [{ name: 'user' }, { name: 'admin' }],
+  //   skipDuplicates: true // Ignorировать дубликаты, если роли уже созданы
+  // })
 }
 
 main()

@@ -1,6 +1,6 @@
-import { Controller, Post, Req } from '@nestjs/common'
 import { AuthService } from './auth.service'
 import { ApiTags } from '@nestjs/swagger'
+import { Controller, Post, Body, Req } from '@nestjs/common'
 
 @ApiTags('auth')
 @Controller('auth')
@@ -16,4 +16,12 @@ export class AuthController {
 
     return this.authService.authenticateTelegram(telegramData)
   }
+
+  // @Post('create-admin')
+  // async createAdmin(
+  //   @Body('firstName') firstName: string,
+  //   @Body('lastName') lastName: string
+  // ) {
+  //   return this.authService.createAdmin(firstName, lastName)
+  // }
 }
