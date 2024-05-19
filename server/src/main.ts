@@ -21,7 +21,7 @@ async function bootstrap() {
       'http://10.8.0.67:80',
       '*'
     ],
-    methods: ['GET', 'POST'],
+    methods: ['GET', 'POST', 'DELETE'],
     credentials: true
   })
   app.use(cookieParser())
