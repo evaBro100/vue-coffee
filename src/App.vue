@@ -4,6 +4,9 @@ import axios from 'axios'
 import Header from './components/Header.vue'
 import Drawer from './components/Drawer.vue'
 import CardList from './components/CardList.vue'
+import { useAuthStore } from '@/store'
+
+const store = useAuthStore()
 
 const items = ref([])
 const cartItems = ref([])
@@ -35,13 +38,22 @@ const removeFromCart = (item) => {
   item.isAdded = false
 }
 
+const apiUrl = import.meta.env.VITE_HOST_API
+
 const createOrder = async () => {
   try {
     isCreatingOrders.value = true
-    const { data } = await axios.post('https://869ed7102af9fbd3.mokky.dev/orders', {
+    const { data } = await axios.post('https://869ed7102af9fbd3.mokky.dev/zorders', {
       items: cartItems.value,
       totalPrice: totalPrice.value
     })
+
+    // адаптация под бэк
+    // const { data } = await axios.post(`${apiUrl}orders`, {
+    //   userId: 1,
+    //   items: cartItems.value.map((i) => ({ ...i, quantity: 1, productId: i.id })),
+    //   totalPrice: totalPrice.value
+    // })
 
     cartItems.value = []
     return data
@@ -92,10 +104,20 @@ const handleFavorite = async (item) => {
         parentId: item.id
       }
       const { data } = await axios.post(`https://869ed7102af9fbd3.mokky.dev/favorites`, obj)
+
+      // адаптация под бэк
+      // const obj = {
+      //   // TODO выделить в отд переменную
+      //   userId: store.user.id,
+      //   productId: item.id
+      // }
+      // const { data } = await axios.post(`${apiUrl}favorites`, obj)
       item.isFavorite = true
       item.favoriteId = data.id
     } else {
       await axios.delete(`https://869ed7102af9fbd3.mokky.dev/favorites/${item.favoriteId}`)
+      // адаптация под бэк
+      // await axios.delete(`${apiUrl}favorites/${store.user.id}/${item.id}`)
       item.isFavorite = false
       item.favoriteId = null
     }
@@ -108,8 +130,8 @@ const fetchItems = async () => {
   try {
     const params = {
       sortBy: filters.sortBy
+      // userId: store.user.id
     }
-
     if (filters.searchQuery) {
       params.title = `*${filters.searchQuery}*`
     }
@@ -123,6 +145,18 @@ const fetchItems = async () => {
       favoriteId: null,
       isAdded: false
     }))
+
+    // if (filters.searchQuery) {
+    //   params.searchTerm = `${filters.searchQuery}`
+    // }
+    // const { data } = await axios.get(`${apiUrl}products`, {
+    //   params
+    // })
+    // items.value = data.map((obj) => ({
+    //   ...obj,
+    //   imageUrl: obj.images[0],
+    //   isAdded: false
+    // }))
   } catch (err) {
     console.log(err)
   }
@@ -131,7 +165,9 @@ const fetchItems = async () => {
 onMounted(async () => {
   const localCart = localStorage.getItem('cart')
   cartItems.value = localCart ? JSON.parse(localCart) : []
+  store.initUser()
   await fetchItems()
+  // TODO закомментить
   await fetchFavorites()
   items.value = items.value.map((item) => ({
     ...item,
