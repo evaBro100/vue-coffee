@@ -38,10 +38,17 @@ const removeFromCart = (item) => {
 const createOrder = async () => {
   try {
     isCreatingOrders.value = true
-    const { data } = await axios.post('https://869ed7102af9fbd3.mokky.dev/orders', {
+    const { data } = await axios.post('https://869ed7102af9fbd3.mokky.dev/zorders', {
       items: cartItems.value,
       totalPrice: totalPrice.value
     })
+
+    // адаптация под бэк
+    // const { data } = await axios.post(`${import.meta.env.VITE_HOST_API}orders`, {
+    //   userId: 1,
+    //   items: cartItems.value.map((i) => ({ ...i, quantity: 1, productId: i.id })),
+    //   totalPrice: totalPrice.value
+    // })
 
     cartItems.value = []
     return data
