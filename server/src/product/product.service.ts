@@ -18,31 +18,35 @@ export class ProductService {
       sortField = sortBy
     }
 
-    const products: CreateProductDto[] = await this.prisma.product.findMany(
-      searchTerm
-        ? {
-            where: {
-              OR: [
-                {
-                  title: {
-                    contains: searchTerm,
-                    mode: 'insensitive'
-                  }
-                },
-                {
-                  description: {
-                    contains: searchTerm,
-                    mode: 'insensitive'
-                  }
-                }
-              ]
+    const orderBy = {
+      [sortField]: sortValue // Замените на 'desc', если нужна сортировка по убыванию
+    }
+    console.log(orderBy)
+
+    let products: CreateProductDto[]
+    if (searchTerm) {
+      products = await this.prisma.product.findMany({
+        where: {
+          OR: [
+            {
+              title: {
+                contains: searchTerm,
+                mode: 'insensitive'
+              }
             },
-            orderBy: {
-              [sortField]: sortValue // Замените на 'desc', если нужна сортировка по убыванию
+            {
+              description: {
+                contains: searchTerm,
+                mode: 'insensitive'
+              }
             }
-          }
-        : undefined
-    )
+          ]
+        },
+        orderBy
+      })
+    } else {
+      products = await this.prisma.product.findMany({ orderBy })
+    }
 
     if (!products) throw new NotFoundException('Product not found')
 

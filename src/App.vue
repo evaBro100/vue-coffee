@@ -4,6 +4,9 @@ import axios from 'axios'
 import Header from './components/Header.vue'
 import Drawer from './components/Drawer.vue'
 import CardList from './components/CardList.vue'
+import { useAuthStore } from '@/store'
+
+const store = useAuthStore()
 
 const items = ref([])
 const cartItems = ref([])
@@ -114,20 +117,33 @@ const handleFavorite = async (item) => {
 const fetchItems = async () => {
   try {
     const params = {
-      sortBy: filters.sortBy
+      sortBy: filters.sortBy,
+      userId: store.user.id
     }
+
+    // if (filters.searchQuery) {
+    //   params.title = `*${filters.searchQuery}*`
+    // }
+
+    // const { data } = await axios.get(`https://869ed7102af9fbd3.mokky.dev/items`, {
+    //   params
+    // })
+    // items.value = data.map((obj) => ({
+    //   ...obj,
+    //   isFavorite: false,
+    //   favoriteId: null,
+    //   isAdded: false
+    // }))
 
     if (filters.searchQuery) {
-      params.title = `*${filters.searchQuery}*`
+      params.searchTerm = `${filters.searchQuery}`
     }
-
-    const { data } = await axios.get(`https://869ed7102af9fbd3.mokky.dev/items`, {
+    const { data } = await axios.get(`${import.meta.env.VITE_HOST_API}products`, {
       params
     })
     items.value = data.map((obj) => ({
       ...obj,
-      isFavorite: false,
-      favoriteId: null,
+      imageUrl: obj.images[0],
       isAdded: false
     }))
   } catch (err) {
@@ -144,6 +160,7 @@ onMounted(async () => {
     ...item,
     isAdded: cartItems.value.some((cartItem) => cartItem.id === item.id)
   }))
+  store.initUser()
 })
 watch(filters, fetchItems)
 

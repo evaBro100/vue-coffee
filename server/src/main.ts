@@ -6,6 +6,7 @@ import {
   SwaggerDocumentOptions,
   SwaggerModule
 } from '@nestjs/swagger'
+import * as cookieParser from 'cookie-parser'
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule)
@@ -23,6 +24,7 @@ async function bootstrap() {
     methods: ['GET', 'POST'],
     credentials: true
   })
+  app.use(cookieParser())
 
   const prismaService = app.get(PrismaService)
   await prismaService.enableShutdownHooks(app)
