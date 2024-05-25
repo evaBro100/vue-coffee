@@ -31,11 +31,11 @@ model Product {
 //   product   Product  @relation(fields: [productId], references: [id])
 // }
 
-// model Role {
-//   id    Int    @id @default(autoincrement())
-//   name  String @unique
-//   users User[]
-// }
+model Role {
+  id    Int    @id @default(autoincrement())
+  name  String @unique
+  users User[]
+}
 
 model User {
   id         Int        @id @default(autoincrement())
@@ -46,8 +46,8 @@ model User {
   createdAt  DateTime   @default(now()) @map("created_at")
   updatedAt  DateTime   @updatedAt @map("updated_at")
   favorites  Favorite[]
-  // roleId     Int        @default(1)
-  // role       Role       @relation(fields: [roleId], references: [id])
+  roleId     Int        @default(1)
+  role       Role       @relation(fields: [roleId], references: [id])
   Order      Order[]
 }
 
