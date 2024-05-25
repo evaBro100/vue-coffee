@@ -52,14 +52,24 @@ export class AuthService {
     }
     response.cookie('tg_user', JSON.stringify(userData), {
       httpOnly: true
+      // sameSite: 'lax'
       // secure: true // Используйте это только в случае, если у вас HTTPS
     })
     return user
   }
 
-  async logout(response: any): Promise<void> {
+  async logout(response: Response): Promise<void> {
     // Удаляем cookie с информацией о пользователе
     response.clearCookie('tg_user')
+    response.cookie('stel_token', '', {
+      // httpOnly: true,
+      secure: true, // Используйте это только в случае, если у вас HTTPS
+      sameSite: 'none',
+      path: '/', // Убедитесь, что путь правильный
+      domain: 'oauth.telegram.org' // Замените на ваш домен
+    })
+    // response.clearCookie('stel_token')
+    // response.clearCookie('stel_ssid')
   }
 
   // async createAdmin(firstName: string, lastName: string): Promise<any> {

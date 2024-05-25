@@ -51,10 +51,10 @@ async function main() {
       data: fakerProduct(i)
     })
   }
-  // await prisma.role.createMany({
-  //   data: [{ name: 'user' }, { name: 'admin' }],
-  //   skipDuplicates: true // Ignorировать дубликаты, если роли уже созданы
-  // })
+  await prisma.role.createMany({
+    data: [{ name: 'user' }, { name: 'admin' }],
+    skipDuplicates: true // Игнорировать дубликаты, если роли уже созданы
+  })
 }
 
 main()
