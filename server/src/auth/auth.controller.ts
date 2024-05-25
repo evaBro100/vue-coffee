@@ -1,7 +1,7 @@
 import { AuthService } from './auth.service'
 import { ApiTags } from '@nestjs/swagger'
 import { type Response } from 'express'
-import { Controller, Post, Body, Req, Res } from '@nestjs/common'
+import { Controller, Post, Body, Req, Res, Get } from '@nestjs/common'
 
 @ApiTags('auth')
 @Controller('auth')
@@ -18,7 +18,7 @@ export class AuthController {
     response.send(user)
   }
 
-  @Post('logout')
+  @Get('logout')
   async logout(@Res() response: Response) {
     await this.authService.logout(response)
     response.send({ message: 'Logged out successfully' })

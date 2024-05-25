@@ -13,7 +13,9 @@ const store = useAuthStore()
 const onLogin = async (user) => {
   // TODO надо куда-то в стор
   try {
-    const res = await axios.post(`${import.meta.env.VITE_HOST_API}auth/telegram`, user)
+    const res = await axios.post(`${import.meta.env.VITE_HOST_API}auth/telegram`, user, {
+      withCredentials: true // Обязательно для отправки куки
+    })
     console.log('-----', res)
     store.setUser(res.data)
   } catch (e) {
@@ -53,7 +55,7 @@ const onLogin = async (user) => {
       </div>
       <telegram-login-temp mode="callback" telegram-login="myshatte_bot" @callback="onLogin" />
       <!-- TODO можно сделать что-то красивое -->
-      <button v-if="store.isAuth" @click="store.logout()">EXIT</button>
+      <!-- <button v-if="store.isAuth" @click="store.logout()">EXIT</button> -->
     </ul>
   </header>
 </template>

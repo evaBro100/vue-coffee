@@ -165,6 +165,8 @@ const fetchItems = async () => {
 onMounted(async () => {
   const localCart = localStorage.getItem('cart')
   cartItems.value = localCart ? JSON.parse(localCart) : []
+  // убрать при исп бд
+  store.isAuth = true
   store.initUser()
   await fetchItems()
   // TODO закомментить
@@ -175,6 +177,8 @@ onMounted(async () => {
   }))
 })
 watch(filters, fetchItems)
+
+watch(store.isAuth, fetchItems)
 
 watch(cartItems, () => {
   items.value = items.value.map((item) => ({
