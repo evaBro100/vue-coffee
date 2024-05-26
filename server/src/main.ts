@@ -6,22 +6,25 @@ import {
   SwaggerDocumentOptions,
   SwaggerModule
 } from '@nestjs/swagger'
+import * as cookieParser from 'cookie-parser'
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule)
   app.enableCors({
     origin: [
       'http://localhost:3000',
-      'http://example.com',
+      'http://172.24.240.1',
       'http://www.example.com',
-      'http://app.example.com',
+      'http://172.30.74.31',
       'https://example.com',
       'http://10.8.0.67',
-      'http://10.8.0.67:80'
+      'http://10.8.0.67:80',
+      '*'
     ],
-    methods: ['GET', 'POST'],
+    methods: ['GET', 'POST', 'DELETE'],
     credentials: true
   })
+  app.use(cookieParser())
 
   const prismaService = app.get(PrismaService)
   await prismaService.enableShutdownHooks(app)
@@ -29,6 +32,7 @@ async function bootstrap() {
   const config = new DocumentBuilder()
     .setTitle('Myshatte')
     .setVersion('1.0')
+    .addBearerAuth()
     .build()
   const options: SwaggerDocumentOptions = {
     operationIdFactory: (controllerKey: string, methodKey: string) =>

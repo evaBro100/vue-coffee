@@ -1,3 +1,29 @@
+<script setup>
+import { useAuthStore } from '@/store'
+import axios from 'axios'
+import { telegramLoginTemp } from 'vue3-telegram-login'
+
+defineProps({
+  totalPrice: Number
+})
+const emit = defineEmits(['openDrawer'])
+
+const store = useAuthStore()
+
+const onLogin = async (user) => {
+  // TODO надо куда-то в стор
+  try {
+    const res = await axios.post(`${import.meta.env.VITE_HOST_API}auth/telegram`, user, {
+      withCredentials: true // Обязательно для отправки куки
+    })
+    console.log('-----', res)
+    store.setUser(res.data)
+  } catch (e) {
+    console.log(e)
+  }
+}
+</script>
+
 <template>
   <header class="flex justify-between border-b border-slate-300 px-8">
     <div class="flex items-center gap-4">
@@ -10,32 +36,28 @@
 
     <!-- TODO скрывать кнопки до входа в акк и придумать кнопку выхода -->
     <ul class="flex items-center gap-10">
-      <li class="flex items-center cursor-pointer gap-3 text-gray-500 hover:text-black">
-        <img src="/cart.svg" alt="Cart" />
-        <b>0 руб.</b>
-      </li>
-      <li class="flex items-center cursor-pointer gap-3 text-gray-500 hover:text-black">
-        <img src="/heart.svg" alt="Heart" />
-        <span>Избранное</span>
-      </li>
-      <li class="flex items-center cursor-pointer gap-3 text-gray-500 hover:text-black">
-        <img src="/profile.svg" alt="Profile" />
-        <span>Профиль</span>
-      </li>
+      <div class="flex items-center gap-10" v-if="store.isAuth">
+        <li
+          @click="emit('openDrawer')"
+          class="flex items-center cursor-pointer gap-3 text-gray-500 hover:text-black"
+        >
+          <img src="/cart.svg" alt="Cart" />
+          <b>{{ totalPrice }} руб.</b>
+        </li>
+        <li class="flex items-center cursor-pointer gap-3 text-gray-500 hover:text-black">
+          <img src="/heart.svg" alt="Heart" />
+          <span>Избранное</span>
+        </li>
+        <li class="flex items-center cursor-pointer gap-3 text-gray-500 hover:text-black">
+          <img src="/profile.svg" alt="Profile" />
+          <span>Профиль</span>
+        </li>
+      </div>
       <telegram-login-temp mode="callback" telegram-login="myshatte_bot" @callback="onLogin" />
+      <!-- TODO можно сделать что-то красивое -->
+      <!-- <button v-if="store.isAuth" @click="store.logout()">EXIT</button> -->
     </ul>
   </header>
 </template>
-
-<script setup>
-import axios from 'axios'
-import { telegramLoginTemp } from 'vue3-telegram-login'
-
-const onLogin = async (user) => {
-  const res = await axios.post(`${import.meta.env.VITE_HOST_API}auth/telegram`, user)
-  // TODO надо куда-то в стор
-  console.log(res)
-}
-</script>
 
 <style lang="scss" scoped></style>

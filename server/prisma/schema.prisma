@@ -8,37 +8,47 @@ datasource db {
 }
 
 model Product {
-  id          Int        @id @default(autoincrement())
-  createdAt   DateTime   @default(now()) @map("created_at")
-  updatedAt   DateTime   @updatedAt @map("updated_at")
-  title       String     @unique
+  id          Int         @id @default(autoincrement())
+  createdAt   DateTime    @default(now()) @map("created_at")
+  updatedAt   DateTime    @updatedAt @map("updated_at")
+  title       String      @unique
   description String?
   // slug        String   @unique
   price       Decimal
   images      String[]
-  reviews     Review[]
+  // reviews     Review[]
   Favorite    Favorite[]
+  OrderItem   OrderItem[]
 }
 
-model Review {
-  id        Int      @id @default(autoincrement())
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt @map("updated_at")
-  text      String
-  rating    Decimal
-  productId Int      @map("product_id")
-  product   Product  @relation(fields: [productId], references: [id])
+// model Review {
+//   id        Int      @id @default(autoincrement())
+//   createdAt DateTime @default(now()) @map("created_at")
+//   updatedAt DateTime @updatedAt @map("updated_at")
+//   text      String
+//   rating    Decimal
+//   productId Int      @map("product_id")
+//   product   Product  @relation(fields: [productId], references: [id])
+// }
+
+model Role {
+  id    Int    @id @default(autoincrement())
+  name  String @unique
+  users User[]
 }
 
 model User {
   id         Int        @id @default(autoincrement())
-  telegramId Int        @unique
+  telegramId Int?       @unique
   firstName  String?
   lastName   String?
   username   String?
   createdAt  DateTime   @default(now()) @map("created_at")
   updatedAt  DateTime   @updatedAt @map("updated_at")
-  favorites  Favorite[] // Добавляем отношение многие ко многим к модели Favorite
+  favorites  Favorite[]
+  roleId     Int        @default(1)
+  role       Role       @relation(fields: [roleId], references: [id])
+  Order      Order[]
 }
 
 model Favorite {
@@ -51,4 +61,25 @@ model Favorite {
   productId Int      @map("product_id")
 
   @@unique([userId, productId]) // Уникальный индекс для комбинации пользователя и продукта
+}
+
+model Order {
+  id        Int         @id @default(autoincrement())
+  createdAt DateTime    @default(now()) @map("created_at")
+  updatedAt DateTime    @updatedAt @map("updated_at")
+  userId    Int         @map("user_id")
+  user      User        @relation(fields: [userId], references: [id])
+  items     OrderItem[]
+  total     Decimal
+  status    String
+}
+
+model OrderItem {
+  id        Int     @id @default(autoincrement())
+  orderId   Int     @map("order_id")
+  order     Order   @relation(fields: [orderId], references: [id])
+  productId Int     @map("product_id")
+  product   Product @relation(fields: [productId], references: [id])
+  quantity  Int
+  price     Decimal
 }

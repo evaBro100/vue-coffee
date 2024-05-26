@@ -9,21 +9,20 @@ import {
   Query
 } from '@nestjs/common'
 import { ReviewService } from './review.service'
-import { ApiTags } from '@nestjs/swagger';
+import { ApiTags } from '@nestjs/swagger'
 
 @ApiTags('reviews')
-
 @Controller('reviews')
 export class ReviewController {
   constructor(private readonly reviewService: ReviewService) {}
 
-  @Get()
-  findAll() {
-    return this.reviewService.findAll()
-  }
+  // @Get()
+  // findAll() {
+  //   return this.reviewService.findAll()
+  // }
 
-  @Get(':id')
-  findById(@Param('id') id: string) {
-    return this.reviewService.findById(+id)
-  }
+  // @Get(':id')
+  // findById(@Param('id') id: string) {
+  //   return this.reviewService.findById(+id)
+  // }
 }
