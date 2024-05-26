@@ -1,0 +1,21 @@
+// vite.config.js
+import { fileURLToPath, URL } from "node:url";
+import { defineConfig } from "file:///Users/evakharchenko/Desktop/PIgit/vue-coffee/node_modules/vite/dist/node/index.js";
+import vue from "file:///Users/evakharchenko/Desktop/PIgit/vue-coffee/node_modules/@vitejs/plugin-vue/dist/index.mjs";
+import vueJsx from "file:///Users/evakharchenko/Desktop/PIgit/vue-coffee/node_modules/@vitejs/plugin-vue-jsx/dist/index.mjs";
+var __vite_injected_original_import_meta_url = "file:///Users/evakharchenko/Desktop/PIgit/vue-coffee/vite.config.js";
+var vite_config_default = defineConfig({
+  plugins: [vue(), vueJsx()],
+  resolve: {
+    alias: {
+      "@": fileURLToPath(new URL("./src", __vite_injected_original_import_meta_url))
+    }
+  },
+  server: {
+    port: 80
+  }
+});
+export {
+  vite_config_default as default
+};
+//# sourceMappingURL=data:application/json;base64,ewogICJ2ZXJzaW9uIjogMywKICAic291cmNlcyI6IFsidml0ZS5jb25maWcuanMiXSwKICAic291cmNlc0NvbnRlbnQiOiBbImNvbnN0IF9fdml0ZV9pbmplY3RlZF9vcmlnaW5hbF9kaXJuYW1lID0gXCIvVXNlcnMvZXZha2hhcmNoZW5rby9EZXNrdG9wL1BJZ2l0L3Z1ZS1jb2ZmZWVcIjtjb25zdCBfX3ZpdGVfaW5qZWN0ZWRfb3JpZ2luYWxfZmlsZW5hbWUgPSBcIi9Vc2Vycy9ldmFraGFyY2hlbmtvL0Rlc2t0b3AvUElnaXQvdnVlLWNvZmZlZS92aXRlLmNvbmZpZy5qc1wiO2NvbnN0IF9fdml0ZV9pbmplY3RlZF9vcmlnaW5hbF9pbXBvcnRfbWV0YV91cmwgPSBcImZpbGU6Ly8vVXNlcnMvZXZha2hhcmNoZW5rby9EZXNrdG9wL1BJZ2l0L3Z1ZS1jb2ZmZWUvdml0ZS5jb25maWcuanNcIjtpbXBvcnQgeyBmaWxlVVJMVG9QYXRoLCBVUkwgfSBmcm9tICdub2RlOnVybCdcblxuaW1wb3J0IHsgZGVmaW5lQ29uZmlnIH0gZnJvbSAndml0ZSdcbmltcG9ydCB2dWUgZnJvbSAnQHZpdGVqcy9wbHVnaW4tdnVlJ1xuaW1wb3J0IHZ1ZUpzeCBmcm9tICdAdml0ZWpzL3BsdWdpbi12dWUtanN4J1xuXG4vLyBodHRwczovL3ZpdGVqcy5kZXYvY29uZmlnL1xuZXhwb3J0IGRlZmF1bHQgZGVmaW5lQ29uZmlnKHtcbiAgcGx1Z2luczogW3Z1ZSgpLCB2dWVKc3goKV0sXG4gIHJlc29sdmU6IHtcbiAgICBhbGlhczoge1xuICAgICAgJ0AnOiBmaWxlVVJMVG9QYXRoKG5ldyBVUkwoJy4vc3JjJywgaW1wb3J0Lm1ldGEudXJsKSlcbiAgICB9XG4gIH0sXG4gIHNlcnZlcjoge1xuICAgIHBvcnQ6IDgwXG4gIH1cbn0pXG4iXSwKICAibWFwcGluZ3MiOiAiO0FBQXlULFNBQVMsZUFBZSxXQUFXO0FBRTVWLFNBQVMsb0JBQW9CO0FBQzdCLE9BQU8sU0FBUztBQUNoQixPQUFPLFlBQVk7QUFKK0ssSUFBTSwyQ0FBMkM7QUFPblAsSUFBTyxzQkFBUSxhQUFhO0FBQUEsRUFDMUIsU0FBUyxDQUFDLElBQUksR0FBRyxPQUFPLENBQUM7QUFBQSxFQUN6QixTQUFTO0FBQUEsSUFDUCxPQUFPO0FBQUEsTUFDTCxLQUFLLGNBQWMsSUFBSSxJQUFJLFNBQVMsd0NBQWUsQ0FBQztBQUFBLElBQ3REO0FBQUEsRUFDRjtBQUFBLEVBQ0EsUUFBUTtBQUFBLElBQ04sTUFBTTtBQUFBLEVBQ1I7QUFDRixDQUFDOyIsCiAgIm5hbWVzIjogW10KfQo=
