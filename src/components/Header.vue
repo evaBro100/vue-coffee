@@ -26,13 +26,15 @@ const onLogin = async (user) => {
 
 <template>
   <header class="flex justify-between border-b border-slate-300 px-8">
-    <div class="flex items-center gap-4">
+    <RouterLink to="/"> 
+      <div class="flex items-center gap-4">
       <img src="/logo.png" alt="Logo" class="w-10" />
       <div>
         <h2 class="text-xl font-bold uppercase">МышАтте</h2>
         <p class="text-gray-500">Всегда самый вкусный</p>
       </div>
     </div>
+  </RouterLink>
 
     <!-- TODO скрывать кнопки до входа в акк и придумать кнопку выхода -->
     <ul class="flex items-center gap-10">
@@ -44,6 +46,7 @@ const onLogin = async (user) => {
           <img src="/cart.svg" alt="Cart" />
           <b>{{ totalPrice }} руб.</b>
         </li>
+
         <li class="flex items-center cursor-pointer gap-3 text-gray-500 hover:text-black">
           <img src="/heart.svg" alt="Heart" />
           <span>Избранное</span>
