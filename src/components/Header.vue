@@ -3,6 +3,7 @@ import { useAuthStore } from '@/store'
 import axios from 'axios'
 import { telegramLoginTemp } from 'vue3-telegram-login'
 
+
 defineProps({
   totalPrice: Number
 })

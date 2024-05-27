@@ -3,9 +3,6 @@ import { ref, watch, provide, computed } from 'vue'
 import axios from 'axios'
 import Header from './components/Header.vue'
 import Drawer from './components/Drawer.vue'
-import CardList from './components/CardList.vue'
-
-
 import { useAuthStore } from '@/store'
 
 const store = useAuthStore()
@@ -76,6 +73,14 @@ provide('cart', {
   removeFromCart
 })
 
+watch(
+  () => store.isAuth,
+  (newVal) => {
+    if (newVal) {
+      fetchItems();
+    }
+  }
+);
 
 const fetchItems = async () => {
     try {
