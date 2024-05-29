@@ -34,9 +34,9 @@ const onClickAddPlus = (item) => {
 
 const fetchFavorites = async () => {
 try {
-    const { data: favorites } = await axios.get(`https://869ed7102af9fbd3.mokky.dev/favorites`)
+    const { data: favorites } = await axios.get(`https://869ed7102af9fbd3.mokky.dev/favorite`)
     items.value = items.value.map((item) => {
-    const favorite = favorites.find((favorite) => favorite.parentId === item.id)
+    const favorite = favorites.find((favorite) => favorite.item_id === item.id)
 
     if (!favorite) return item
     return {
@@ -51,32 +51,35 @@ console.log(err)
 }
 
 const handleFavorite = async (item) => {
-try {
-if (!item.isFavorite) {
-    const obj = {
-    parentId: item.id
-    }
-    const { data } = await axios.post(`https://869ed7102af9fbd3.mokky.dev/favorites`, obj)
+    try {
+        if (!item.isFavorite) {
+        const obj = {
+            item_id: item.id,
+        }
+        
 
-    // адаптация под бэк
-    // const obj = {
-    //   // TODO выделить в отд переменную
-    //   userId: store.user.id,
-    //   productId: item.id
-    // }
-    // const { data } = await axios.post(`${apiUrl}favorites`, obj)
-    item.isFavorite = true
-    item.favoriteId = data.id
-} else {
-    await axios.delete(`https://869ed7102af9fbd3.mokky.dev/favorites/${item.favoriteId}`)
-    // адаптация под бэк
-    // await axios.delete(`${apiUrl}favorites/${store.user.id}/${item.id}`)
-    item.isFavorite = false
-    item.favoriteId = null
-}
-} catch (err) {
-console.log(err)
-}
+        // адаптация под бэк
+        // const obj = {
+        //   // TODO выделить в отд переменную
+        //   userId: store.user.id,
+        //   productId: item.id
+        // }
+        // const { data } = await axios.post(`${apiUrl}favorites`, obj)
+        item.isFavorite = true
+
+        const { data } = await axios.post(`https://869ed7102af9fbd3.mokky.dev/favorite`, obj)
+
+        item.favoriteId = data.id
+    }   else {
+        await axios.delete(`https://869ed7102af9fbd3.mokky.dev/favorite/${item.favoriteId}`)
+        // адаптация под бэк
+        // await axios.delete(`${apiUrl}favorites/${store.user.id}/${item.id}`)
+        item.isFavorite = false
+        item.favoriteId = null
+    }
+    } catch (err) {
+    console.log(err)
+    }
 }
 
 const fetchItems = async () => {

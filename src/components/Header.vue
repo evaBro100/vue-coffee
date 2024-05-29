@@ -48,10 +48,13 @@ const onLogin = async (user) => {
           <b>{{ totalPrice }} руб.</b>
         </li>
 
+      <router-link to="/favorites">
         <li class="flex items-center cursor-pointer gap-3 text-gray-500 hover:text-black">
           <img src="/heart.svg" alt="Heart" />
           <span>Избранное</span>
         </li>
+      </router-link>
+
         <li class="flex items-center cursor-pointer gap-3 text-gray-500 hover:text-black">
           <img src="/profile.svg" alt="Profile" />
           <span>Профиль</span>
