@@ -137,7 +137,7 @@ watch(cartItems, () => {
     }))
 })
 
-watch(store.isAuth, fetchItems)
+// watch(store.isAuth, fetchItems)
 watch(filters, fetchItems)
 
 </script>

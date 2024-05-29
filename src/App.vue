@@ -119,7 +119,7 @@ const fetchItems = async () => {
 }
 
 
-watch(store.isAuth, fetchItems)
+// watch(store.isAuth, fetchItems)
 
 </script>
 

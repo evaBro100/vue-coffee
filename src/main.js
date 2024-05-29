@@ -28,6 +28,6 @@ const router = createRouter({
 })
 
 app.use(pinia)
-app.mount('#app')
 app.use(autoAnimatePlugin)
 app.use(router)
+app.mount('#app')
