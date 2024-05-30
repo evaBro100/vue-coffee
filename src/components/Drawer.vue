@@ -5,14 +5,13 @@ import InfoBlock from './InfoBlock.vue'
 import { ref, inject, computed } from 'vue'
 import axios from 'axios'
 
-
 const props = defineProps({
   totalPrice: Number,
   tips: Number,
   buttonDisabled: Boolean
 })
 
-const {  cartItems, closeDrawer} = inject('cart')
+const { cartItems, closeDrawer } = inject('cart')
 
 const cartIsEmpty = computed(() => cartItems.value.length === 0)
 const buttonDisabled = computed(() => isCreating.value || cartIsEmpty.value)
@@ -23,7 +22,7 @@ const orderId = ref(null)
 const createOrder = async () => {
   try {
     isCreating.value = true
-    
+
     const { data } = await axios.post('https://869ed7102af9fbd3.mokky.dev/orders', {
       items: cartItems.value,
       totalPrice: props.totalPrice.value
@@ -51,7 +50,6 @@ const createOrder = async () => {
   <div class="fixed top-0 left-0 h-full w-full bg-black z-10 opacity-70"></div>
   <div class="bg-white w-96 h-full fixed right-0 top-0 z-20 p-8">
     <DrawerHead />
-
 
     <div v-if="!totalPrice || orderId" class="flex h-full items-center">
       <InfoBlock

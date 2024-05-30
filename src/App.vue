@@ -10,7 +10,6 @@ const cartItems = ref([])
 const totalPrice = computed(() => cartItems.value.reduce((acc, item) => acc + item.price, 0))
 const tips = computed(() => Math.round(totalPrice.value * 0.05))
 
-
 const drawerOpen = ref(false)
 const closeDrawer = () => {
   drawerOpen.value = false
@@ -51,29 +50,29 @@ watch(
   () => store.isAuth,
   (newVal) => {
     if (newVal) {
-      fetchItems();
+      fetchItems()
     }
   }
-);
+)
 
 const fetchItems = async () => {
-    try {
+  try {
     const params = {
-        sortBy: filters.sortBy
-        // userId: store.user.id
+      sortBy: filters.sortBy
+      // userId: store.user.id
     }
     if (filters.searchQuery) {
-        params.title = `*${filters.searchQuery}*`
+      params.title = `*${filters.searchQuery}*`
     }
 
     const { data } = await axios.get(`https://869ed7102af9fbd3.mokky.dev/items`, {
-        params
+      params
     })
     items.value = data.map((obj) => ({
-        ...obj,
-        isFavorite: false,
-        favoriteId: null,
-        isAdded: false
+      ...obj,
+      isFavorite: false,
+      favoriteId: null,
+      isAdded: false
     }))
 
     // if (filters.searchQuery) {
@@ -87,22 +86,16 @@ const fetchItems = async () => {
     //   imageUrl: obj.images[0],
     //   isAdded: false
     // }))
-    } catch (err) {
+  } catch (err) {
     console.log(err)
-    }
+  }
 }
 
-
 // watch(store.isAuth, fetchItems)
-
 </script>
 
 <template>
-  <Drawer
-    v-if="drawerOpen"
-    :totalPrice="totalPrice"
-    :tips="tips"
-  />
+  <Drawer v-if="drawerOpen" :totalPrice="totalPrice" :tips="tips" />
   <div class="bg-white w-4/5 m-auto mt-14 rounded-xl shadow-2xl">
     <Header :total-price="totalPrice" @open-drawer="openDrawer" />
     <div class="p-10">

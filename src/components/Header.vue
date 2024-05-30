@@ -3,7 +3,6 @@ import { useAuthStore } from '@/store'
 import axios from 'axios'
 import { telegramLoginTemp } from 'vue3-telegram-login'
 
-
 defineProps({
   totalPrice: Number
 })
@@ -27,15 +26,15 @@ const onLogin = async (user) => {
 
 <template>
   <header class="flex justify-between border-b border-slate-300 px-8">
-    <RouterLink to="/"> 
+    <RouterLink to="/">
       <div class="flex items-center gap-4">
-      <img src="/logo.png" alt="Logo" class="w-10" />
-      <div>
-        <h2 class="text-xl font-bold uppercase">МышАтте</h2>
-        <p class="text-gray-500">Всегда самый вкусный</p>
+        <img src="/logo.png" alt="Logo" class="w-10" />
+        <div>
+          <h2 class="text-xl font-bold uppercase">МышАтте</h2>
+          <p class="text-gray-500">Всегда самый вкусный</p>
+        </div>
       </div>
-    </div>
-  </RouterLink>
+    </RouterLink>
 
     <!-- TODO скрывать кнопки до входа в акк и придумать кнопку выхода -->
     <ul class="flex items-center gap-10">
@@ -48,12 +47,12 @@ const onLogin = async (user) => {
           <b>{{ totalPrice }} руб.</b>
         </li>
 
-      <router-link to="/favorites">
-        <li class="flex items-center cursor-pointer gap-3 text-gray-500 hover:text-black">
-          <img src="/heart.svg" alt="Heart" />
-          <span>Избранное</span>
-        </li>
-      </router-link>
+        <router-link to="/favorites">
+          <li class="flex items-center cursor-pointer gap-3 text-gray-500 hover:text-black">
+            <img src="/heart.svg" alt="Heart" />
+            <span>Избранное</span>
+          </li>
+        </router-link>
 
         <li class="flex items-center cursor-pointer gap-3 text-gray-500 hover:text-black">
           <img src="/profile.svg" alt="Profile" />
