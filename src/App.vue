@@ -1,20 +1,15 @@
 <script setup>
-import { onMounted, ref, watch, reactive, provide, computed } from 'vue'
+import { ref, watch, provide, computed } from 'vue'
 import axios from 'axios'
 import Header from './components/Header.vue'
 import Drawer from './components/Drawer.vue'
-import CardList from './components/CardList.vue'
 import { useAuthStore } from '@/store'
 
 const store = useAuthStore()
-
-const items = ref([])
 const cartItems = ref([])
-const isCreatingOrders = ref(false)
 const totalPrice = computed(() => cartItems.value.reduce((acc, item) => acc + item.price, 0))
 const tips = computed(() => Math.round(totalPrice.value * 0.05))
-const cartIsEmpty = computed(() => cartItems.value.length === 0)
-const cartButtonDisabled = computed(() => isCreatingOrders.value || cartIsEmpty.value)
+
 const drawerOpen = ref(false)
 const closeDrawer = () => {
   drawerOpen.value = false
@@ -22,11 +17,6 @@ const closeDrawer = () => {
 const openDrawer = () => {
   drawerOpen.value = true
 }
-
-const filters = reactive({
-  sortBy: 'title',
-  searchQuery: ''
-})
 
 const handleCart = (item) => {
   cartItems.value.push(item)
@@ -40,91 +30,30 @@ const removeFromCart = (item) => {
 
 const apiUrl = import.meta.env.VITE_HOST_API
 
-const createOrder = async () => {
-  try {
-    isCreatingOrders.value = true
-    const { data } = await axios.post('https://869ed7102af9fbd3.mokky.dev/zorders', {
-      items: cartItems.value,
-      totalPrice: totalPrice.value
-    })
+watch(
+  cartItems,
+  () => {
+    localStorage.setItem('cart', JSON.stringify(cartItems.value))
+  },
+  { deep: true }
+)
 
-    // адаптация под бэк
-    // const { data } = await axios.post(`${apiUrl}orders`, {
-    //   userId: 1,
-    //   items: cartItems.value.map((i) => ({ ...i, quantity: 1, productId: i.id })),
-    //   totalPrice: totalPrice.value
-    // })
+provide('cart', {
+  cartItems,
+  closeDrawer,
+  openDrawer,
+  handleCart,
+  removeFromCart
+})
 
-    cartItems.value = []
-    return data
-  } catch (err) {
-    console.log(err)
-  } finally {
-    isCreatingOrders.value = false
-  }
-}
-
-const onClickAddPlus = (item) => {
-  if (!item.isAdded) {
-    handleCart(item)
-  } else {
-    removeFromCart(item)
-  }
-}
-
-const onChangeSelect = (event) => {
-  filters.sortBy = event.target.value
-}
-const onChangeSearchInput = (event) => {
-  filters.searchQuery = event.target.value
-}
-
-const fetchFavorites = async () => {
-  try {
-    const { data: favorites } = await axios.get(`https://869ed7102af9fbd3.mokky.dev/favorites`)
-    items.value = items.value.map((item) => {
-      const favorite = favorites.find((favorite) => favorite.parentId === item.id)
-
-      if (!favorite) return item
-      return {
-        ...item,
-        isFavorite: true,
-        favoriteId: favorite.id
-      }
-    })
-  } catch (err) {
-    console.log(err)
-  }
-}
-
-const handleFavorite = async (item) => {
-  try {
-    if (!item.isFavorite) {
-      const obj = {
-        parentId: item.id
-      }
-      const { data } = await axios.post(`https://869ed7102af9fbd3.mokky.dev/favorites`, obj)
-
-      // адаптация под бэк
-      // const obj = {
-      //   // TODO выделить в отд переменную
-      //   userId: store.user.id,
-      //   productId: item.id
-      // }
-      // const { data } = await axios.post(`${apiUrl}favorites`, obj)
-      item.isFavorite = true
-      item.favoriteId = data.id
-    } else {
-      await axios.delete(`https://869ed7102af9fbd3.mokky.dev/favorites/${item.favoriteId}`)
-      // адаптация под бэк
-      // await axios.delete(`${apiUrl}favorites/${store.user.id}/${item.id}`)
-      item.isFavorite = false
-      item.favoriteId = null
+watch(
+  () => store.isAuth,
+  (newVal) => {
+    if (newVal) {
+      fetchItems()
     }
-  } catch (err) {
-    console.log(err)
   }
-}
+)
 
 const fetchItems = async () => {
   try {
@@ -162,83 +91,15 @@ const fetchItems = async () => {
   }
 }
 
-onMounted(async () => {
-  const localCart = localStorage.getItem('cart')
-  cartItems.value = localCart ? JSON.parse(localCart) : []
-  // убрать при исп бд
-  store.isAuth = true
-  store.initUser()
-  await fetchItems()
-  // TODO закомментить
-  await fetchFavorites()
-  items.value = items.value.map((item) => ({
-    ...item,
-    isAdded: cartItems.value.some((cartItem) => cartItem.id === item.id)
-  }))
-})
-watch(filters, fetchItems)
-
-watch(store.isAuth, fetchItems)
-
-watch(cartItems, () => {
-  items.value = items.value.map((item) => ({
-    ...item,
-    isAdded: false
-  }))
-})
-
-watch(
-  cartItems,
-  () => {
-    localStorage.setItem('cart', JSON.stringify(cartItems.value))
-  },
-  { deep: true }
-)
-
-provide('cart', {
-  cartItems,
-  closeDrawer,
-  openDrawer,
-  handleCart,
-  removeFromCart
-})
+// watch(store.isAuth, fetchItems)
 </script>
 
 <template>
-  <Drawer
-    v-if="drawerOpen"
-    :totalPrice="totalPrice"
-    :tips="tips"
-    @create-order="createOrder"
-    :button-disabled="cartButtonDisabled"
-  />
+  <Drawer v-if="drawerOpen" :totalPrice="totalPrice" :tips="tips" />
   <div class="bg-white w-4/5 m-auto mt-14 rounded-xl shadow-2xl">
     <Header :total-price="totalPrice" @open-drawer="openDrawer" />
     <div class="p-10">
-      <div class="flex justify-between items-center">
-        <h2 class="text-3xl font-bold mb-10">Меню</h2>
-
-        <div class="flex gap-4">
-          <select @change="onChangeSelect" class="py-2 px-3 border rounded-md outline-none">
-            <option value="title">По наименованию</option>
-            <option value="price">По цене (дешевле)</option>
-            <option value="-price">По цене (дороже)</option>
-          </select>
-          <div class="relative">
-            <img class="absolute left-4 top-3" src="/search.svg" />
-
-            <input
-              @input="onChangeSearchInput"
-              class="border rounded-md py-2 pl-11 pr-4 outline-none focus:border-gray-400"
-              type="text"
-              placeholder="Поиск..."
-            />
-          </div>
-        </div>
-      </div>
-      <div class="mt-10">
-        <CardList :items="items" @handleFavorite="handleFavorite" @handleCart="onClickAddPlus" />
-      </div>
+      <RouterView />
     </div>
   </div>
 </template>
