@@ -54,10 +54,6 @@ const onLogin = async (user) => {
           </li>
         </router-link>
 
-        <li class="flex items-center cursor-pointer gap-3 text-gray-500 hover:text-black">
-          <img src="/profile.svg" alt="Profile" />
-          <span>Профиль</span>
-        </li>
       </div>
       <telegram-login-temp mode="callback" telegram-login="myshatte_bot" @callback="onLogin" />
       <!-- TODO можно сделать что-то красивое -->
