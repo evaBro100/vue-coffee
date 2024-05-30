@@ -7,11 +7,10 @@ import { useAuthStore } from '@/store'
 
 const store = useAuthStore()
 const cartItems = ref([])
-const isCreatingOrders = ref(false)
 const totalPrice = computed(() => cartItems.value.reduce((acc, item) => acc + item.price, 0))
 const tips = computed(() => Math.round(totalPrice.value * 0.05))
-const cartIsEmpty = computed(() => cartItems.value.length === 0)
-const cartButtonDisabled = computed(() => isCreatingOrders.value || cartIsEmpty.value)
+
+
 const drawerOpen = ref(false)
 const closeDrawer = () => {
   drawerOpen.value = false
@@ -31,31 +30,6 @@ const removeFromCart = (item) => {
 }
 
 const apiUrl = import.meta.env.VITE_HOST_API
-
-const createOrder = async () => {
-  try {
-    isCreatingOrders.value = true
-    const { data } = await axios.post('https://869ed7102af9fbd3.mokky.dev/zorders', {
-      items: cartItems.value,
-      totalPrice: totalPrice.value
-    })
-
-    // адаптация под бэк
-    // const { data } = await axios.post(`${apiUrl}orders`, {
-    //   userId: 1,
-    //   items: cartItems.value.map((i) => ({ ...i, quantity: 1, productId: i.id })),
-    //   totalPrice: totalPrice.value
-    // })
-
-    cartItems.value = []
-    return data
-  } catch (err) {
-    console.log(err)
-  } finally {
-    isCreatingOrders.value = false
-  }
-}
-
 
 watch(
   cartItems,
@@ -128,8 +102,6 @@ const fetchItems = async () => {
     v-if="drawerOpen"
     :totalPrice="totalPrice"
     :tips="tips"
-    @create-order="createOrder"
-    :button-disabled="cartButtonDisabled"
   />
   <div class="bg-white w-4/5 m-auto mt-14 rounded-xl shadow-2xl">
     <Header :total-price="totalPrice" @open-drawer="openDrawer" />
