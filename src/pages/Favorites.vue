@@ -19,6 +19,6 @@
 </script>
 
 <template>
-    <h1>Мои избранные</h1>
-    <CardList :items="favorites" />
+    <h2 class="text-3xl font-bold mb-10">Избранное</h2>
+    <CardList :items="favorites" is-favorites/>
 </template>
